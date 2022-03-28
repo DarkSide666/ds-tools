@@ -1,0 +1,22 @@
+{
+    "name": "darkside666/ds-tools",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Imants Horsts",
+            "homepage": "https://darkside.lv/"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "psr/log": "~1.0",
+        "kevinlebrun/colors.php": "~1"
+    },
+    "autoload": {
+        "psr-4": {
+            "dsTools\\": "src/"
+        }
+    }
+}

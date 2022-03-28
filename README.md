@@ -26,14 +26,14 @@ try {
 ### Usage
 ```
 // Create Downloader instance
-$downloader = new ds-tools\Downloader([
+$downloader = new ds-tools\CKAN\Downloader([
     // CKAN API URL and key. For example, https://data.gov.lv/dati/api/3/
     'api_url' => API_URL,
     'api_key' => API_KEY,
-    
+
     // Folder where resources (files) will be downloaded
     'download_folder' => TMP_FOLDER,
-    
+
     // Folder where files will be unzipped
     'unzip_folder' => DATA_FOLDER,
 ]);
