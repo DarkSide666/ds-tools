@@ -96,7 +96,7 @@ class Downloader
 
             // downloading
             $target = rtrim($this->download_folder, '/') . '/' . $f_name;
-            $this->logger->debug('Downloading: <mark>' . $f_name . '</mark> [' . round($r->size/1000000) . ' Mb] ...');
+            $this->logger->debug('Downloading: <mark>' . $f_name . '</mark> [~' . round($r->size/1000000) . ' Mb] ...');
             $f_from = fopen($r->url, 'r');
             $f_to = fopen($target, 'w');
             stream_copy_to_stream($f_from, $f_to);
