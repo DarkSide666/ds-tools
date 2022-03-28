@@ -91,13 +91,12 @@ class CkanClient
 
     /**
      * Sets the custom cURL headers.
-     * @access    private
-     * @return    void
-     * @since     Version 0.1.0
+     * @access private
+     * @return void
      */
     private function set_headers()
     {
-        $date = new DateTime(null, new DateTimeZone('UTC'));
+        $date = new DateTime('now', new DateTimeZone('UTC'));
         $this->curl_headers = [
             'Date: ' . $date->format('D, d M Y H:i:s') . ' GMT', // RFC 1123
             'Accept: application/json',
