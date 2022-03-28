@@ -3,12 +3,19 @@
 This repository contains various useful tools.
 Some of them rely on one another, but others are fully standalone.
 
+## Installation
+```
+composer require darkside666/ds-tools
+```
+
+
+
 ## Logger
 
 ### Usage
 ```
 // Create Logger instance
-$logger = new ds-tools\Logger();
+$logger = new dsTools\Logger();
 
 // Multiple levels of logging - success, debug, info, notice, warning, error, critical, alert, emergency
 $logger->notice('Download process started');
@@ -26,7 +33,7 @@ try {
 ### Usage
 ```
 // Create Downloader instance
-$downloader = new ds-tools\CKAN\Downloader([
+$downloader = new dsTools\CKAN\Downloader([
     // CKAN API URL and key. For example, https://data.gov.lv/dati/api/3/
     'api_url' => API_URL,
     'api_key' => API_KEY,
