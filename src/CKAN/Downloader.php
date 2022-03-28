@@ -48,6 +48,7 @@ class Downloader
             if (!$this->api_url) {
                 $this->logger->emergency('API URL not set');
             }
+            $this->api_url = rtrim($this->api_url, '/') . '/'; // trailing slash is mandatory
 
             $this->ckan = new CkanClient($this->api_url, $this->api_key);
         }
