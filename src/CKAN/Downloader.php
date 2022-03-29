@@ -144,7 +144,7 @@ class Downloader
                         system($cmd);
                         break;
 
-                    default
+                    default:
                         $this->logger->alert('Unzipper not set, extracting will not happen');
                 }
 
