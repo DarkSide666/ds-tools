@@ -67,7 +67,8 @@ class Downloader
      * @param string $resource_name Optional resource file name. If omitted, then all package files will be downloaded
      * @param bool   $unzip         If true, then downloaded files will be unzipped
      *
-     * @return array Array of paths to downloaded files. If unzip is enabled, then array of paths to folders where files were extracted
+     * @return array Array of paths to downloaded files. If unzip is enabled, then array of paths to folders where files were extracted.
+     *               Key is basename of downloaded file.
      */
     public function download(string $package_name, string $resource_name = null, bool $unzip = false): array
     {
@@ -151,7 +152,7 @@ class Downloader
                 $target = $extract_to;
             }
 
-            $targets[] = $target;
+            $targets[$f_name] = $target;
         }
         $this->logger->debug('Resources download finished');
 
