@@ -120,7 +120,7 @@ class Downloader
                 $this->logger->debug('Extracting: <mark>' . $f_name . '</mark> ...');
 
                 // prepare folder where to extract
-                $extract_to = rtrim($this->unzip_folder ?? $this->download_folder, '/') . '/' . substr($f_name, 0, strrpos($f_name, '.')-1) . '/';
+                $extract_to = rtrim($this->unzip_folder ?? $this->download_folder, '/') . '/' . substr($f_name, 0, strrpos($f_name, '.')) . '/';
                 if (!is_dir($extract_to)) {
                     mkdir($extract_to, 0777, true);
                 }
