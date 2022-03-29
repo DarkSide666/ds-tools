@@ -11,20 +11,26 @@ use dsTools\Logger;
  */
 class Downloader
 {
+    const ZIP_ARCHIVE = 'ZipArchive';
+    const SYSTEM_UNZIP = 'SystemUnzip';
+
     /** @var string required URL of open data API */
-    public $api_url;
+    protected $api_url;
 
     /** @var string optional key of open data API */
-    public $api_key;
+    protected $api_key;
 
     /** @var string folder where to download files */
-    public $download_folder;
+    protected $download_folder;
 
     /** @var string folder where to unzip files. By default, the same as download_folder */
-    public $unzip_folder;
+    protected $unzip_folder;
+
+    /** @var string Unzipper */
+    protected $unzipper = self::ZIP_ARCHIVE;
 
     /** @var Logger */
-    public $logger;
+    protected $logger;
 
     /** @var CKAN client */
     protected $ckan;
@@ -106,19 +112,43 @@ class Downloader
 
             // unzipping
             if ($unzip) {
-                $this->logger->debug('Unzipping: <mark>' . $f_name . '</mark> ...');
-                $zip = new \ZipArchive();
-                if ($zip->open($target) === true) {
-                    $target = rtrim($this->unzip_folder ?? $this->download_folder) . '/' . $f_name . '_extracted';
-                    if (!is_dir($target)) {
-                        mkdir($target, 0777, true);
-                    }
-                    $zip->extractTo($target); // folder named the same as archive file
-                    $zip->close();
-                    $this->logger->debug('Done');
-                } else {
-                    $this->logger->warning('Failed');
+                $this->logger->debug('Extracting: <mark>' . $f_name . '</mark> ...');
+
+                // prepare folder where to extract
+                $extract_to = rtrim($this->unzip_folder ?? $this->download_folder, '/') . '/' . $f_name . '_extracted/';
+                if (!is_dir($extract_to)) {
+                    mkdir($extract_to, 0777, true);
                 }
+
+                // extracting
+                switch ($this->unzipper) {
+
+                    // This will not work good with big archives
+                    // With big archives extractTo() still returns true, but simply silently don't create extracted file
+                    case self::ZIP_ARCHIVE:
+                        $zip = new \ZipArchive();
+                        if ($zip->open($target) === true) {
+                            $zip->extractTo($extract_to);
+                            $zip->close();
+                            $this->logger->debug('Done');
+                        } else {
+                            $this->logger->warning('Failed');
+                        }
+                        break;
+
+                    // This will use OS built-in `unzip` utility and will work fast and with huge files too
+                    // Bad thing about this is that there is no option to catch errors
+                    case self::SYSTEM_UNZIP:
+
+                        $cmd = 'unzip -oq "' . realpath($target) . '" -d "' . $extract_to . '"';
+                        system($cmd);
+                        break;
+
+                    default
+                        $this->logger->alert('Unzipper not set, extracting will not happen');
+                }
+
+                $target = $extract_to;
             }
 
             $targets[] = $target;
