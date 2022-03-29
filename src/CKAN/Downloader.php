@@ -63,15 +63,19 @@ class Downloader
     /**
      * Find package by name and download all resource files of this package or only one specific package file.
      *
-     * @param string $package_name  Required package name
-     * @param string $resource_name Optional resource file name. If omitted, then all package files will be downloaded
-     * @param bool   $unzip         If true, then downloaded files will be unzipped
+     * @param string       $package_name  Required package name
+     * @param string|array $resource_name Optional resource file name or array of file names. If omitted, then all package files will be downloaded
+     * @param bool         $unzip         If true, then downloaded files will be unzipped
      *
      * @return array Array of paths to downloaded files. If unzip is enabled, then array of paths to folders where files were extracted.
      *               Key is basename of downloaded file.
      */
-    public function download(string $package_name, string $resource_name = null, bool $unzip = false): array
+    public function download(string $package_name, $resource_name = null, bool $unzip = false): array
     {
+        if ($resource_name && !is_array($resource_name)) {
+            $resource_name = [$resource_name];
+        }
+
         $this->logger->notice('Downloader / download process started');
 
         // validation
@@ -97,7 +101,7 @@ class Downloader
         $targets = [];
         foreach ($package->resources as $r) {
             $f_name = basename($r->url);
-            if ($resource_name && $f_name != $resource_name) {
+            if ($resource_name && !in_array($f_name, $resource_name)) {
                 continue;
             }
 
