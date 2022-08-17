@@ -97,6 +97,9 @@ class Downloader
         $this->logger->debug('Found package <mark>' . $package_name . '</mark> with <mark>' . count($package->resources) . '</mark> resource files');
 
         // download resources
+        if ($resource_name) {
+            $this->logger->debug('Requested to download only these resources <mark>' . implode('</mark>,<mark>', $resource_name) . '</mark>');
+        }
         $this->logger->debug('Starting to download resources');
         $targets = [];
         foreach ($package->resources as $r) {
